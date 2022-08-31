@@ -16,8 +16,7 @@ def GenerateFrames(self, OutputDirectoryName):
     print("[INFO] Calculating number of frames per second")
  
     CurrentDirectory = os.path.curdir
-    OutputDirectoryPath = os.path.join(
-      CurrentDirectory, OutputDirectoryName)
+    OutputDirectoryPath = os.path.join(CurrentDirectory, OutputDirectoryName)
  
     if os.path.exists(OutputDirectoryPath):
         shutil.rmtree(OutputDirectoryPath)
@@ -38,8 +37,7 @@ def GenerateFrames(self, OutputDirectoryName):
             frame = self.AutoResize(frame)
  
             filename = "frame_" + str(FrameWrittenCount) + ".jpg"
-            cv2.imwrite(os.path.join(
-              OutputDirectoryPath, filename), frame)
+            cv2.imwrite(os.path.join(OutputDirectoryPath, filename), frame)
  
             FrameWrittenCount += 1
          

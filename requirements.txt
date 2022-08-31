@@ -1,0 +1,17 @@
+os
+opencv-python
+numpy
+tensorflow
+json
+re
+shutil
+time
+pickle
+pyPiper
+tqdm
+imutils
+face_recognition
+cmake
+dlib
+warnings
+sklearns
