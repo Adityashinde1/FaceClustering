@@ -32,6 +32,7 @@ python main.py
 1. OpenCV
 2. Face_recognition library
 3. Clustering
+4. DBSCAN
 
 ## 🏭 Industrial Use-case
 1. It create labels and group them in folders for users to adapt them as a dataset for their training use-cases.
