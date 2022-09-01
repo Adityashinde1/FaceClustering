@@ -1,50 +1,30 @@
 import os
-from faceRecognition.utils.frames_generator import FramesGenerator
-from faceRecognition.utils.datastore_manager import DatastoreManager
-from faceRecognition.utils.face_cluster_utility import TqdmUpdate, FaceClusterUtility
-from faceRecognition.utils.face_encoder import FaceEncoder
-from faceRecognition.utils.Frames_provider import FramesProvider
-from faceRecognition.utils.pickle_listcollector import PicklesListCollator
-from faceRecognition.utils.face_image_generator import FaceImageGenerator
+import sys
+from faceClustering.components.frames_generator import FramesGenerator
+from faceClustering.components.datastore_manager import DatastoreManager
+from faceClustering.components.face_cluster_utility import TqdmUpdate, FaceClusterUtility
+from faceClustering.components.face_encoder import FaceEncoder
+from faceClustering.components.Frames_provider import FramesProvider
+from faceClustering.components.pickle_listcollector import PicklesListCollator
+from faceClustering.components.face_image_generator import FaceImageGenerator
+from faceClustering.exception.exception import FaceClusteringCustomException
 import logging
 import shutil
 import time
-from pyPiper import Node, Pipeline
-
-logging_level = logging.INFO
-main_logger = logging.getLogger()
-main_logger.setLevel(logging_level)
-
-# Set up a stream handler to log to the console
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging_level)
-formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
-stream_handler.setFormatter(formatter)
-
-# Add handler to logger
-main_logger.addHandler(stream_handler)
+from pyPiper import Pipeline
 
 logger = logging.getLogger(__name__)
 
 
 if __name__ == "__main__":
-     
-    try:
-    # Generate the frames from given video footage
-        framesGenerator = FramesGenerator("Footage.mp4")
-        framesGenerator.GenerateFrames("Frames")
 
-    except Exception as e:
-        print(e)
-
-
-    ''' Design and run the face clustering pipeline '''
-
+    # creating path
     CurrentPath = os.getcwd()
     FramesDirectory = "Frames"
     FramesDirectoryPath = os.path.join(CurrentPath, FramesDirectory)
     EncodingsFolder = "Encodings"
     EncodingsFolderPath = os.path.join(CurrentPath, EncodingsFolder)
+    
 
     try:    
         if os.path.exists(EncodingsFolderPath):
@@ -53,9 +33,21 @@ if __name__ == "__main__":
         os.makedirs(EncodingsFolderPath)
 
     except Exception as e:
-        print(e)
+        message = FaceClusteringCustomException(e, sys)
+        logger.error(message.error_message)
+        raise message.error_message
 
+    
+ 
+    try:
+    # Generate the frames from given video footage
+        framesGenerator = FramesGenerator(r"F:\live_face_recognition\live_face_recognition\faceRecognition\data\Footage.mp4")
+        framesGenerator.GenerateFrames(FramesDirectoryPath)
 
+    except Exception as e:
+        message = FaceClusteringCustomException(e, sys)
+        logger.error(message.error_message)
+        raise message.error_message
 
     pipeline = Pipeline(
                         FramesProvider("Files source", sourcePath=FramesDirectoryPath) | 
@@ -67,7 +59,7 @@ if __name__ == "__main__":
     pipeline.run(update_callback=pbar.update)
 
     logger.info(f"Encodings Extracted..")
-
+    
     ''' Merge all the encodings pickle files into one '''
     CurrentPath = os.getcwd()
     EncodingsInputDirectory = "Encodings"
@@ -80,11 +72,13 @@ if __name__ == "__main__":
             os.remove(OutputEncodingPickleFilename)
 
     except Exception as e:
-        print(e)
+        message = FaceClusteringCustomException(e, sys)
+        logger.error(message.error_message)
+        raise message.error_message
 
     picklesListCollator = PicklesListCollator(EncodingsInputDirectoryPath)
     picklesListCollator.GeneratePickle(OutputEncodingPickleFilename)
-
+   
     # To manage any delay in file writing
     time.sleep(0.5)
 

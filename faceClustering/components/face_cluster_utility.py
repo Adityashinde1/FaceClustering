@@ -32,18 +32,18 @@ class FaceClusterUtility:
         print("[INFO] Loading encodings")
         data = pickle.loads(open(InputEncodingFile, "rb").read())
         data = np.array(data)
- 
+        
         encodings = [d["encoding"] for d in data]
  
         # cluster the embeddings
         print("[INFO] Clustering")
+        
         clt = DBSCAN(eps = 0.5, metric ="euclidean",
                       n_jobs = NumberOfParallelJobs)
                        
         clt.fit(encodings)
  
-        # determine the total number of
-        # unique faces found in the dataset
+        # determine the total number of unique faces found in the dataset
         labelIDs = np.unique(clt.labels_)
         numUniqueFaces = len(np.where(labelIDs > -1)[0])
         print("[INFO] # unique faces: {}".format(numUniqueFaces))

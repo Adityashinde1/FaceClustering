@@ -1,5 +1,7 @@
+import os
 import pickle
 from pyPiper import Node
+
 
 
 # Receive the face embeddings for clustering and
