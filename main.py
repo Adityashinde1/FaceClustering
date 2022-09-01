@@ -4,7 +4,7 @@ from faceClustering.components.frames_generator import FramesGenerator
 from faceClustering.components.datastore_manager import DatastoreManager
 from faceClustering.components.face_cluster_utility import TqdmUpdate, FaceClusterUtility
 from faceClustering.components.face_encoder import FaceEncoder
-from faceClustering.components.Frames_provider import FramesProvider
+from faceClustering.components.frames_provider import FramesProvider
 from faceClustering.components.pickle_listcollector import PicklesListCollator
 from faceClustering.components.face_image_generator import FaceImageGenerator
 from faceClustering.exception.exception import FaceClusteringCustomException
