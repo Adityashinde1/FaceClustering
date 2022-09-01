@@ -41,7 +41,7 @@ if __name__ == "__main__":
  
     try:
     # Generate the frames from given video footage
-        framesGenerator = FramesGenerator(r"F:\live_face_recognition\live_face_recognition\faceRecognition\data\Footage.mp4")
+        framesGenerator = FramesGenerator(r"F:\live_face_recognition\live_face_recognition\faceClustering\data\Footage.mp4")
         framesGenerator.GenerateFrames(FramesDirectoryPath)
 
     except Exception as e:
